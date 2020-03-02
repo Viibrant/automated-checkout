@@ -21,7 +21,7 @@ while(True):
     np_image = img_to_array(img)
     image_batch = np.expand_dims(np_image, axis=0)
     processed_image = mobilenet.preprocess_input(image_batch.copy())
-
+    
     # actual machine learning part
     predictions = model.predict(processed_image)
     labels = decode_predictions(predictions)
