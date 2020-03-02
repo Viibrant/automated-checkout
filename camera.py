@@ -13,3 +13,5 @@ class VideoCamera(object):
         # opencv uses raw images by default, encode into jpg to display it
         ret, jpeg = cv2.imencode('.jpg', image)
         return jpeg.tobytes()
+
+    

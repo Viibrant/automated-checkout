@@ -1,5 +1,6 @@
 from flask import Flask, render_template, Response
 from camera import VideoCamera
+from prediction import NeuralNetwork
 
 app = Flask(__name__)
 
