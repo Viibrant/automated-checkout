@@ -7,7 +7,6 @@ from keras.preprocessing.image import load_img
 from keras.applications.imagenet_utils import decode_predictions
 from PIL import Image
 from numpy import asarray
-import process
 import tensorflow as tf
 
 
