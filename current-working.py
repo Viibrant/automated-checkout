@@ -40,12 +40,12 @@ while(True):
     predictions = model.predict(processed_image)
     labels = decode_predictions(predictions)
     for label in labels:
-        print("Prediction: %s, Probability: %s"%(label[0][1], label[0][2]))
- 
+        print("Prediction: %s, Probability: %s" % (label[0][1], label[0][2]))
+
     if ret == True:
         cv2.imshow('frame',frame)
         if cv2.waitKey(1) & 0xFF == ord('l'):
-            break        
+            break      
     else:
         break
 
