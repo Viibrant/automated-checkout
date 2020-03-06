@@ -31,7 +31,7 @@ def predict():
             for prediction in predictions:
                 yield ("Prediction: %s, Probability: %s\n" 
                     % (prediction[0][1], prediction[0][2]))
-    print(True)
+    print("Started Predicting.\n.\n.\n.\n.\n.")
     return Response(pred(model),mimetype='text/plain')
         
 
