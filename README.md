@@ -12,5 +12,7 @@ Project consists of **web.py**, a script that runs the web server itself. Here w
 
 ## Technologies
 OpenCV for the webcam interfacing
+
 Tensorflow for the backend machine learning 
+
 Keras for the high level API because I'm lazy lmao
