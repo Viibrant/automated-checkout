@@ -1,10 +1,14 @@
 from flask import Flask, render_template, Response
+from flask_socketio import SocketIO, emit
+
 from camera import VideoCamera
 from neuralnetwork import NeuralNetwork
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret!'
+socketio = SocketIO(app)
 
-
+####### App Routes ########
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -23,18 +27,23 @@ def video_feed():
 
 @app.route('/predict')
 def predict():
+    global frame
     model = NeuralNetwork()
-    def pred(model):
-        global frame
-        while True:
-            predictions = model.predict(frame)
-            for prediction in predictions:
-                yield ("Prediction: %s, Probability: %s\n" 
-                    % (prediction[0][1], prediction[0][2]))
-    print("Started Predicting.\n.\n.\n.\n.\n.")
-    return Response(pred(model),mimetype='text/plain')
-        
+    print("Prediction Initialising.\n.\n.\n.\n.\n.")
+
+    while True:
+        predictions = model.predict(frame)
+        print(predictions)
+        for prediction in predictions:
+            socketio.emit ('predict', {'data': "Prediction: %s, Probability: %s\n" 
+                % (prediction[0][1], prediction[0][2])})
+    
+####### Socket Events ########
+@socketio.on('my event')                          
+def test_message(message):
+    for x in range(500):    
+        emit('my response', {'data': 'got it %s times!'%(x)})
 
 if __name__ == '__main__':
     app.debug = True
-    app.run(host='0.0.0.0', threaded=True)
+    socketio.run(app, host='0.0.0.0') 
