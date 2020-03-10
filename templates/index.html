@@ -14,10 +14,6 @@
 
 
 <script>
-  // handle returned predictions
-  // $.get("predict", function(data) { 
-  // console.log(data);
-  // $("#prediction").html(data);});
   $(document).ready(function () {
         $.get("predict")
         var socket = io.connect('http://' + document.domain + ':' + location.port);
