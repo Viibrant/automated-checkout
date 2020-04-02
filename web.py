@@ -12,7 +12,6 @@ def index():
     return render_template('index.html')
 
 def gen(camera):
-    global frame
     while True:
         frame = camera.get_frame()
         yield (b'--frame\r\n'
@@ -20,15 +19,11 @@ def gen(camera):
 
 @app.route('/video_feed')
 def video_feed():
-    global v
     return Response(gen(v),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
-@app.route('/predict')
-def predict():
+def predict(frame):
     print("Prediction Initialising.\n.\n.\n.\n.\n.")
-    global frame
-    global v
     model = NeuralNetwork()
     #v.draw_box(0, 0, 69, 69, (255, 0, 0))
     while True:
@@ -42,8 +37,8 @@ def predict():
 ####### Socket Events ########
 @socketio.on('picture')                          
 def snap(picture):
-    print("picture received!")
-    
+    image = v.get_frame()
+    predict(image)
 
 if __name__ == '__main__':
     app.debug = True

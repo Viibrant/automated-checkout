@@ -15,6 +15,8 @@ class VideoCamera(object):
         ret, jpeg = cv2.imencode('.jpg', image)
         return jpeg.tobytes()
 
+
+
     # def draw_box(self, x1, x2, y1, y2, colour):
     #     cv2.rectangle(self.frame, (x1, x2), (y1, y2), colour)
         
