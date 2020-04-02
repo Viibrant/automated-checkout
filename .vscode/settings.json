@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/home/connor/.conda/envs/tensorflow_cpu/bin/python",
+    "python.pythonPath": "/home/connor/miniconda3/envs/tf-gpu/bin/python",
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true,
     "python.linting.banditEnabled": false

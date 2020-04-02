@@ -1,27 +1,26 @@
-import numpy as np
 from tensorflow.keras.preprocessing.image import img_to_array
-from tensorflow.keras.applications import mobilenet
-from tensorflow.keras.applications.imagenet_utils import decode_predictions
+from imageai.Detection import ObjectDetection
 from PIL import Image
+import cv2
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'  # or any {'0', '1', '2'}
 import tensorflow as tf
+import numpy as np
 import io
 
+tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 class NeuralNetwork(object):
     def __init__(self):
-        self.model = mobilenet.MobileNet(weights='imagenet')
+        self.model = ObjectDetection()
+        self.model.setModelTypeAsYOLOv3()
+        self.model.setModelPath(os.path.join(os.getcwd(), "yolo.h5"))
+        self.model.loadModel(detection_speed="faster")
     
     def predict(self, frame):
-        # get the image and convert it into a numpy array and into a format for our model
-        #img = Image.fromarray(frame, 'RGB')
-        img = Image.open(io.BytesIO(frame))
-        img = img.resize((224,224), Image.ANTIALIAS)
-        np_image = img_to_array(img)
-        image_batch = np.expand_dims(np_image, axis=0)
-        processed_image = mobilenet.preprocess_input(image_batch.copy())
-        
-        # actual machine learning part
-        predictions = self.model.predict(processed_image)
-        return decode_predictions(predictions)
+        print("Predicting...")
+        array = img_to_array(frame)
+        detections = self.model.detectObjectsFromImage(input_image=array, input_type="array", minimum_percentage_probability=30, output_type="array")
+        return detections
 
 gpus = tf.config.experimental.list_physical_devices('GPU')
 if gpus:

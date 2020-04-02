@@ -24,7 +24,7 @@ if gpus:
 
 
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(-1)
 model = mobilenet.MobileNet(weights='imagenet')
 
 while(True):
