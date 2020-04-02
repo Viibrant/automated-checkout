@@ -33,10 +33,6 @@ def predict():
     #v.draw_box(0, 0, 69, 69, (255, 0, 0))
     while True:
         predictions = model.predict(frame)
-        #for prediction in predictions:
-            #socketio.emit ('predict', {'data': "Prediction:<font color='red'>%s</font>\nProbability: <font color='red'>%s<font>"
-            #    % (prediction[0][1], prediction[0][2])})
-        
         for eachObject in predictions:
             print(eachObject["name"] , " : ", eachObject["percentage_probability"], " : ", eachObject["box_points"] )
             print("--------------------------------")
@@ -44,10 +40,10 @@ def predict():
         socketio.emit('predict', {'data': predictions})
 
 ####### Socket Events ########
-@socketio.on('my event')                          
-def test_message(message):
-    for x in range(500):
-        emit('my response', {'data': 'got it %s times!'%(x)})
+@socketio.on('picture')                          
+def snap(picture):
+    print("picture received!")
+    
 
 if __name__ == '__main__':
     app.debug = True

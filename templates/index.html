@@ -1,6 +1,7 @@
 <html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"> </script>
 <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
+<script src="/socket.io/socket.io.js"></script>
 
 <head>
   <title>Real Time Object Detection</title>
@@ -15,27 +16,24 @@
 
 
 <script>
-
-  var button = document.createElement("button");
-  button.innerHTML = "Take Picture";
-
-  var body = document.getElementsByTagName("body")[0];
-  body.appendChild(button);
-
-  // 3. Add event handler
-  button.addEventListener("click", function () {
-    alert("did something");
-  });
-
   $(document).ready(function () {
     $.get("predict")
-    var socket = io.connect('http://' + document.domain + ':' + location.port);
-    console.log('http://' + document.domain + ':' + location.port);
-
+    const socket = io();
     socket.on('predict', function (msg) {
-      console.log(msg);
+      console.log(msg); 
       $('#prediction').html(msg['data']);
     });
+
+    var button = document.createElement("button");
+    button.innerHTML = "Take Picture";
+    var body = document.getElementsByTagName("body")[0];
+    body.appendChild(button);
+
+    button.addEventListener("click", function () {
+      console.log("Picture taken!");
+      socket.emit("picture", "test");
+    });
+
   });
 
 
