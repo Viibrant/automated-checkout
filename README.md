@@ -1,6 +1,5 @@
 # Automated-Checkout
-Main repository for this project, built hopefully using Tensorflow and Keras.
-Good luck to me lmao let's go
+Main repository for this project, built using Flask, ImageAI.
 
 ## Execution
 To run (pretty obvious but still):
@@ -13,5 +12,5 @@ Project consists of **web.py**, a script that runs the web server itself. Here w
 
 ## Dependencies
 ```bash
-pip install tensorflow opencv keras flask flask_socketio
+pip install tensorflow opencv keras flask flask_socketio imageai pillow
 ```
