@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, request
 from flask_socketio import SocketIO, emit
 from camera import VideoCamera
 from neuralnetwork import NeuralNetwork
@@ -17,6 +17,12 @@ def index():
 def video_feed():
     return Response(gen(v),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/price')
+def price():
+    product = request.args.get('product')
+    prices = json.load("prices.json")
+    
 
 def predict(frame):
     print("Prediction Initialising.\n.\n.\n.\n.\n.")
