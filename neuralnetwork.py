@@ -1,4 +1,3 @@
-from tensorflow.keras.preprocessing.image import img_to_array
 from imageai.Detection import ObjectDetection
 from PIL import Image
 import cv2
@@ -7,7 +6,6 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'  # or any {'0', '1', '2'}
 import tensorflow as tf
 import numpy as np
 import io
-
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 class NeuralNetwork(object):
     def __init__(self):
@@ -16,11 +14,12 @@ class NeuralNetwork(object):
         self.model.setModelPath(os.path.join(os.getcwd(), "yolo.h5"))
         self.model.loadModel(detection_speed="faster")
     
-    def predict(self, frame):
+    def predict(self, raw):
         print("Predicting...")
-        array = img_to_array(frame)
-        detections = self.model.detectObjectsFromImage(input_image=array, input_type="array", minimum_percentage_probability=30, output_type="array")
-        return detections
+        image = np.array(Image.open(io.BytesIO(raw)))
+        detections = self.model.detectObjectsFromImage(input_image=image, input_type="array", output_type="array", minimum_percentage_probability=30)
+        print(detections[1])
+        return detections[1]
 
 gpus = tf.config.experimental.list_physical_devices('GPU')
 if gpus:

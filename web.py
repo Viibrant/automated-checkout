@@ -2,6 +2,8 @@ from flask import Flask, render_template, Response
 from flask_socketio import SocketIO, emit
 from camera import VideoCamera
 from neuralnetwork import NeuralNetwork
+import numpy
+import json
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -25,14 +27,12 @@ def video_feed():
 def predict(frame):
     print("Prediction Initialising.\n.\n.\n.\n.\n.")
     model = NeuralNetwork()
-    #v.draw_box(0, 0, 69, 69, (255, 0, 0))
-    while True:
-        predictions = model.predict(frame)
-        for eachObject in predictions:
-            print(eachObject["name"] , " : ", eachObject["percentage_probability"], " : ", eachObject["box_points"] )
-            print("--------------------------------")
+    predictions = model.predict(frame)
+    def convert(o):
+        if isinstance(o, numpy.int32): return int(o) 
+        raise TypeError
 
-        socketio.emit('predict', {'data': predictions})
+    socketio.emit('predict', {'data': json.dumps(predictions, default=convert)})
 
 ####### Socket Events ########
 @socketio.on('picture')                          
