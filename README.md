@@ -12,5 +12,6 @@ Project consists of **web.py**, a script that runs the web server itself. Here w
 
 ## Dependencies
 ```bash
-pip install tensorflow opencv keras flask flask_socketio imageai pillow
+pip install tensorflow opencv keras flask flask_socketio imageai pillow numpy
 ```
+Basically you may as well just install Anaconda that'll probably sort you all out considering
