@@ -15,8 +15,6 @@
 </body>
 
 <script>
-
-
   $(document).ready(function () {
     const socket = io();
     var button = document.createElement("button");
@@ -35,9 +33,6 @@
       $("#webcam").animate({opacity: 1}, "fast");
       socket.emit("picture", "test");
     });
-
   });
 </script>
-
-
 </html>

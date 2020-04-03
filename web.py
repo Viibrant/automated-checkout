@@ -13,12 +13,6 @@ v = VideoCamera()
 def index():
     return render_template('index.html')
 
-def gen(camera):
-    while True:
-        frame = camera.get_frame()
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
-
 @app.route('/video_feed')
 def video_feed():
     return Response(gen(v),
@@ -33,6 +27,12 @@ def predict(frame):
         raise TypeError
 
     socketio.emit('predict', {'data': json.dumps(predictions, default=convert)})
+
+def gen(camera):
+    while True:
+        frame = camera.get_frame()
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
 ####### Socket Events ########
 @socketio.on('picture')                          
