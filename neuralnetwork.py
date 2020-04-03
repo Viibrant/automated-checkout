@@ -18,7 +18,6 @@ class NeuralNetwork(object):
         print("Predicting...")
         image = np.array(Image.open(io.BytesIO(raw)))
         detections = self.model.detectObjectsFromImage(input_image=image, input_type="array", output_type="array", minimum_percentage_probability=30)
-        print(detections[1])
         return detections[1]
 
 gpus = tf.config.experimental.list_physical_devices('GPU')
