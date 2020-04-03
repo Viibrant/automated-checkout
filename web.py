@@ -2,6 +2,7 @@ from flask import Flask, render_template, Response, request
 from flask_socketio import SocketIO, emit
 from camera import VideoCamera
 from neuralnetwork import NeuralNetwork
+from collections import Counter
 import numpy
 import json
 
@@ -18,21 +19,30 @@ def video_feed():
     return Response(gen(v),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
-@app.route('/price')
-def price():
-    product = request.args.get('product')
-    prices = json.load("prices.json")
-    
-
 def predict(frame):
     print("Prediction Initialising.\n.\n.\n.\n.\n.")
     model = NeuralNetwork()
     predictions = model.predict(frame)
-    def convert(o):
-        if isinstance(o, numpy.int32): return int(o) 
-        raise TypeError
 
-    socketio.emit('predict', {'data': json.dumps(predictions, default=convert)})
+    quantities = Counter(prediction['name'] for prediction in predictions)
+    products = []
+    with open('prices.json') as json_file:
+        for key, element in quantities.items():
+            try: 
+                data = json.load(json_file)
+                products.append({
+                    'product': key,
+                    'quantity': element,
+                    'price': data[key] * element
+                })
+            except:
+                products.append({
+                    'product': key,
+                    'quantity': element,
+                    'price': 0
+                })
+    print(products)
+    socketio.emit('predict', {'data': json.dumps(products)})
 
 def gen(camera):
     while True:
