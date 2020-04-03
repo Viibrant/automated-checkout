@@ -4,35 +4,94 @@
 <script src="/socket.io/socket.io.js"></script>
 
 <head>
-  <title>Real Time Object Detection</title>
+  <title>Self Checkout</title>
 </head>
 
 <body>
-  <h1>Real Time Object Detection</h1>
-  <img id="webcam" style="position: relative;" src="{{ url_for('video_feed') }}">
-  <p id="prediction"></p>
-  <p>Endorsed by Luce uwu</p>
+  <h1>Self Checkout</h1>
+  <div class="container">
+    <div class="floatLeft">
+      <img id="webcam" style="position: relative;" src="{{ url_for('video_feed') }}">
+      <button id="pictureButton"></button>
+    </div>
+    <div class="floatRight">
+      <table class="table">
+        <tr>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Price</th>
+        </tr>
+      </table>
+      <p id="total">Total: 0.00</p>
+      <button id="payButton"></button>
+    </div>
+  </div>
 </body>
 
 <script>
   $(document).ready(function () {
     const socket = io();
-    var button = document.createElement("button");
-    button.innerHTML = "Take Picture";
-    var body = document.getElementsByTagName("body")[0];
-    body.appendChild(button);
+    var pictureButton = document.getElementById("pictureButton");
+    var payButton = document.getElementById("payButton");
+    var floatLeft = document.getElementsByClassName("floatLeft")[0];
+    var floatRight = document.getElementsByClassName("floatRight")[0];
+    var totalElement = document.getElementById("total");
+    var total = 0;
+    pictureButton.innerHTML = "Take Picture";
+    payButton.innerHTML = "Proceed to Payment";
+    payButton.disabled = true;
+    floatLeft.appendChild(pictureButton);
+    floatRight.appendChild(payButton);
 
     socket.on('predict', function (msg) {
+      pictureButton.disabled = false;
       console.log(msg);
-      $('#prediction').html(msg['data']);
+      $.each(JSON.parse(msg['data']), function (i, data) {
+        $("table.table").append("<tr><td>" + data.product + "</td><td>" + data.quantity + "</td><td>" + data.price + "</td></tr>");
+        total = total + data.price;
+      })
+      payButton.disabled = false;
+      pictureButton.disabled = false;
+      $('#total').html("Total: " + total);
     });
 
-    button.addEventListener("click", function () {
+    pictureButton.addEventListener("click", function () {
       console.log("Picture taken!");
-      $("#webcam").animate({opacity: 0.5}, "fast");
-      $("#webcam").animate({opacity: 1}, "fast");
+      $("#webcam").animate({ opacity: 0.5 }, "fast");
+      $("#webcam").animate({ opacity: 1 }, "fast");
       socket.emit("picture", "test");
-    });
+      pictureButton.disabled = true;
+    })
+
+    payButton.addEventListener("click", function () {
+      alert("Total:" + total);
+    })
+
   });
+
 </script>
+
+<style>
+  .floatLeft {
+    width: 50%;
+    float: left;
+  }
+
+  .floatRight {
+    width: 50%;
+    float: right;
+
+  }
+
+  .container {
+    overflow: hidden;
+  }
+
+  thead,
+  tr,
+  th {
+    border: 1px solid black;
+  }
+</style>
+
 </html>
