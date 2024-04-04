@@ -1,7 +1,7 @@
 # ⚠️ Archive notice 📚 2024/04
 This repo contains my A Level Computer Science coursework.
 
->*🔧 I used YOLOv3, then SOTA pretrained object detector, for an automated checkout. It served as an initial foray into applying neural networks within a practical, albeit simplified, retail setting. This project remains as both a record of my early exploration into machine learning, yet also as simple nostalgia.*
+>*🔧 I used [YOLOv3](https://pjreddie.com/darknet/yolo/), then SOTA pretrained object detector, for an automated checkout. It served as an initial foray into applying neural networks within a practical, albeit simplified, retail setting. This project remains as both a record of my early exploration into machine learning, yet also as simple nostalgia.*
 
 >*🧠 I learnt a lot from this project. The bit I was particularly proud of was getting the frontend websocket code to work, pulling data streamed from the backend and dynamically creating a table with the detected objects. It was my first time working with generator functions, which I hadn’t even heard of before diving into this. Also, this was my first shot at putting together a system that used different programming languages, which I found quite exciting.*
 
